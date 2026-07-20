@@ -2,7 +2,7 @@
 
 Personal portfolio site for Tanaya Datar — bioinformatics, machine learning, and computational biology.
 
-**Live site:** [tanayadatar.bio](https://tanayadatar.bio)
+**Live site:** [tanayadatar.bio](https://tanayadatar.vercel.app/)
 
 ## Built With
 
