@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((p) => ({ params: { slug: p.slug }, props: { entry: p } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+<Layout title={entry.data.title}>
+  <article class="section container">
+    <div class="prose">
+      <p class="eyebrow">{entry.data.date.toDateString()}</p>
+      <h1>{entry.data.title}</h1>
+      <div class="tag-row" style="margin:0 0 2rem">
+        {entry.data.tags.map((t: string) => <span class="tag">{t}</span>)}
+      </div>
+      <Content />
+    </div>
+  </article>
+</Layout>

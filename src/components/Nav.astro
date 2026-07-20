@@ -1,0 +1,52 @@
+---
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const links = [
+  { href: '/', label: 'home' },
+  { href: '/about', label: 'about' },
+  { href: '/skills', label: 'skills' },
+  { href: '/projects', label: 'projects' },
+  { href: '/posters', label: 'research' },
+  { href: 'https://genome-insider.vercel.app/', label: 'blog' },
+  { href: '/extracurriculars', label: 'extracurriculars' },
+  { href: '/contact', label: 'contact' },
+];
+---
+<nav class="site-nav">
+  <div class="container nav-row">
+    <a href="/" class="brand">tanayadatar<span class="dot">.</span>bio</a>
+    <div style="display:flex; align-items:center; gap:0.7rem;">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark theme">
+        <span id="theme-toggle-label">dark</span>
+      </button>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">menu</button>
+    </div>
+    <ul class="nav-links" id="nav-links">
+      {links.map(l => (
+        <li><a href={l.href} class={path === l.href ? 'active' : ''}>{l.label}</a></li>
+      ))}
+    </ul>
+  </div>
+</nav>
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const links = document.getElementById('nav-links');
+  toggle?.addEventListener('click', () => links?.classList.toggle('open'));
+
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeLabel = document.getElementById('theme-toggle-label');
+
+  function currentTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  }
+  function syncLabel() {
+    if (themeLabel) themeLabel.textContent = currentTheme() === 'light' ? 'light' : 'dark';
+  }
+  syncLabel();
+
+  themeToggle?.addEventListener('click', () => {
+    const next = currentTheme() === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    syncLabel();
+  });
+</script>

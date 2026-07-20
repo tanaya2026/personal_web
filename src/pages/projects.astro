@@ -1,0 +1,90 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const projects = [
+  {
+    title: 'ExprCompareR',
+    summary: 'Comparing RNA-seq and protein expression across tissues normally means manually pulling data from GTEx and the Human Protein Atlas, then hand-rolling normalization and stats. ExprCompareR is an R package that automates the pipeline end-to-end — querying both databases, computing Spearman correlations, flagging RNA/protein outlier genes, and comparing cancer vs. normal tissue expression — all through a Shiny app.',
+    tags: ['bioinformatics', 'R', 'tools'],
+    links: [{ label: 'View', url: 'https://github.com/tanaya2026/ExprCompareR' }],
+  },
+{
+  title: 'BMP7 Signaling in Medulloblastoma: Bulk RNA-seq Analysis',
+  summary: 'Recreated and extended the analysis behind Ohata et al. (2025) on BMP7-driven oncogenic signaling in medulloblastoma — cleaning, normalizing, and running differential expression on their bulk RNA-seq dataset (GSE229150), then following up with thresholded and non-thresholded pathway enrichment and building an enrichment map in Cytoscape.',
+  tags: ['bioinformatics', 'R'],
+  links: [
+    { label: 'Data Processing & DE', url: 'https://bcb420-2026.github.io/Tanaya_Datar/A1_TanayaDatar.html' },
+    { label: 'Pathway & Network Analysis', url: 'https://bcb420-2026.github.io/Tanaya_Datar/A2_TanayaDatar.html' },
+    ],
+  },
+
+  {
+  title: 'Arabidopsis Gene Regulatory Networks',
+  summary: 'Newly discovered transcription-factor dimer interactions from dDAP-seq were sitting outside existing plant biology databases, so I parsed narrowPeak files against the TAIR10 genome annotation to extract the AGIs of interacting genes, then built a UI extension to visualize these new protein-DNA and protein-protein interactions in AIV2/ePlant.',
+  tags: ['bioinformatics', 'tools', 'python', 'R', 'javascript', 'html'],
+  links: [{ label: 'View', url: 'https://github.com/tanaya2026/Arabidopsis_GRNs' }],
+},
+
+{
+  title: 'SNV Pathogenicity Predictor',
+  summary: 'Doctors need fast, low-cost ways to interpret Sanger sequencing results for personalized treatment, so our 7-person hackathon team built an ML pipeline that classifies SNPs as pathogenic or benign — combining ClinVar annotations with nucleotide-transformer sequence embeddings to train a random forest classifier. I mined and annotated the genomic datasets (mapping each SNV to its gene, exon, and regulatory feature) for training/validation.',
+  tags: ['ml', 'bioinformatics'],
+  links: [{ label: 'View', url: 'https://devpost.com/software/predicting-if-a-snv-is-pathogenic-or-benign' }],
+},
+    {
+  title: 'Study Buddy Finder Application',
+  summary: 'Students struggle to find study partners who share their courses and schedule, so this Java app (built with a 5-person team) matches users by shared courses and availability, falling back to program-level matches when no course overlap exists — all built with Clean Architecture and integrated with the Slotify scheduling API.',
+  tags: ['java', 'tools'],
+  links: [{ label: 'View', url: 'https://github.com/tanaya2026/STUDY_BUDDY_FINDER_APP' }],
+},
+];
+
+const allTags = ['all', ...Array.from(new Set(projects.flatMap((p) => p.tags)))];
+---
+<Layout title="Projects">
+  <section class="section container">
+    <p class="eyebrow">cat projects.md</p>
+    <h1>Projects</h1>
+
+    <div class="filter-row" id="filters">
+      {allTags.map((t, i) => (
+        <button class={`filter-chip ${i === 0 ? 'active' : ''}`} data-tag={t}>{t}</button>
+      ))}
+    </div>
+
+    <div class="grid grid-2" id="project-grid">
+      {projects.map((p) => (
+        <div class="card project-card" data-tags={p.tags.join(',')}>
+          <h3>{p.title}</h3>
+          <p class="dim" style="margin:0.4rem 0 0">{p.summary}</p>
+          <div class="tag-row">
+            {p.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+           <div style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+             {p.links.map((l) => (
+              <a href={l.url} class="btn">{l.label} &rarr;</a>
+              ))}
+        </div>
+      </div>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+
+<script>
+  const chips = document.querySelectorAll('.filter-chip');
+  const cards = document.querySelectorAll('.project-card');
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      chips.forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+      const tag = chip.getAttribute('data-tag');
+      cards.forEach((card) => {
+        const tags = card.getAttribute('data-tags')?.split(',') || [];
+        const show = tag === 'all' || tags.includes(tag || '');
+        (card as HTMLElement).style.display = show ? '' : 'none';
+      });
+    });
+  });
+</script>

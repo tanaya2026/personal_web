@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posters = (await getCollection('posters')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+<Layout title="Posters and Papers">
+  <section class="section container">
+    <p class="eyebrow">cat posters.md</p>
+    <h1>Posters and Papers</h1>
+
+    <div class="timeline">
+      {posters.map((p) => (
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+
+          <div>
+            <span
+              style="font-family:var(--font-mono); font-size:0.78rem; color:var(--text-faint)"
+            >
+              {p.data.date.getFullYear()} · {p.data.venue}
+            </span>
+
+            <h3 style="margin:0.2rem 0 0">{p.data.title}</h3>
+
+            <p class="dim" style="margin:0.3rem 0 0">
+              {p.data.authors}
+            </p>
+          </div>
+        </div>
+      ))}
+
+      {posters.length === 0 && (
+        <p class="dim">
+          Add markdown files to <code>src/content/posters/</code> to populate this list.
+        </p>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .timeline {
+    position: relative;
+    margin-top: 2rem;
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--rule-strong);
+  }
+  .timeline-item {
+    display: flex;
+    gap: 1rem;
+    padding: 0 0 2rem;
+    color: var(--text);
+    border-bottom: none;
+  }
+  .timeline-item:hover h3 { color: var(--accent); }
+  .timeline-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 0.4rem;
+    margin-left: -1.98rem;
+    box-shadow: 0 0 0 4px var(--bg);
+  }
+</style>

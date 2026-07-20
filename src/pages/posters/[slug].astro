@@ -1,0 +1,27 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posters = await getCollection('posters');
+  return posters.map((p) => ({ params: { slug: p.slug }, props: { entry: p } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+<Layout title={entry.data.title}>
+  <section class="section container">
+    <div class="prose">
+      <p class="eyebrow">{entry.data.venue}</p>
+      <h1>{entry.data.title}</h1>
+      <p class="dim">{entry.data.authors} · {entry.data.date.toDateString()}</p>
+      <div class="tag-row" style="margin:1rem 0 2rem">
+        {entry.data.tags.map((t: string) => <span class="tag">{t}</span>)}
+      </div>
+      <Content />
+      {entry.data.pdf && <p><a class="btn" href={entry.data.pdf} target="_blank">View PDF &rarr;</a></p>}
+      {entry.data.link && <p><a class="btn" href={entry.data.link} target="_blank">External link &rarr;</a></p>}
+    </div>
+  </section>
+</Layout>

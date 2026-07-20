@@ -1,0 +1,80 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Contact">
+  <section class="section container">
+    <p class="eyebrow">./contact --send</p>
+    <h1>Contact</h1>
+    <p class="dim" style="max-width:var(--measure)">
+      Get in touch. Whether it's research, genomics, software, or just to say hello, my inbox is always open.
+      Execute <code>./send</code> below and your message will be delivered directly to my inbox.
+
+    <div class="terminal-box">
+      <div class="terminal-header">
+        <span class="dot" style="background:#f2554e"></span>
+        <span class="dot" style="background:#f2b74e"></span>
+        <span class="dot" style="background:#4ef27a"></span>
+        <span style="margin-left:0.6rem">contact.sh</span>
+      </div>
+      <form
+  action="https://formspree.io/f/xlgqglqd"
+  method="POST"
+  class="terminal-body"
+>
+        <label>$ name<input type="text" name="name" required /></label>
+        <label>$ email<input type="email" name="email" required /></label>
+        <label>$ message<textarea name="message" rows="4" required></textarea></label>
+        <button type="submit" class="btn" style="margin-top:0.5rem">./send</button>
+      </form>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .terminal-box {
+    margin-top: 2rem;
+    max-width: 560px;
+    background: var(--bg-raised);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: var(--font-mono);
+  }
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1rem;
+    background: var(--bg-raised-2);
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+  .terminal-header .dot { width: 9px; height: 9px; border-radius: 50%; }
+  .terminal-body {
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .terminal-body label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--accent-2);
+  }
+  .terminal-body input, .terminal-body textarea {
+    font-family: var(--font-mono);
+    background: var(--bg);
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    color: var(--text);
+    padding: 0.55rem 0.7rem;
+    font-size: 0.9rem;
+  }
+  .terminal-body input:focus, .terminal-body textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+</style>
+

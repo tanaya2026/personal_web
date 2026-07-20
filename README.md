@@ -1,52 +1,38 @@
-# Personal site (Astro)
+# tanayadatar.bio
 
-Theme: "lab notebook meets terminal" — dark charcoal background, amber
-highlighter accent, `Fraunces` for headings, `Inter` for body, `IBM Plex Mono`
-for labels/data. Signature feature is an interactive synthetic UMAP on the
-homepage: drag the "cluster resolution" slider to watch points regroup and
-recolor, mirroring Leiden clustering in Scanpy.
+Personal portfolio site for Tanaya Datar — bioinformatics, machine learning, and computational biology.
 
-## Run locally
+**Live site:** [tanayadatar.bio](https://tanayadatar.bio)
 
-```bash
-npm install
-npm run dev
+## Built With
+
+- [Astro](https://astro.build) — static site framework
+- Vanilla JavaScript & CSS (no UI framework) — custom components, animations, and theming
+- Hosted on Vercel
+
+## Pages
+
+- **Home** — intro + animated brain/neural-network visual
+- **About** — background, research interests, education
+- **Skills** — technical skills overview
+- **Projects** — filterable project grid (bioinformatics, ML, tools)
+- **Research** — posters and research work
+- **Extracurriculars** — activities, awards, volunteering
+- **Blog** — [Genome Insider](https://genome-insider.vercel.app/) (separate site)
+- **Contact**
+
+## Features
+
+- Light/dark mode toggle (defaults to dark, preference saved via `localStorage`)
+- Responsive layout
+- Custom animated components (SVG + vanilla JS, no external animation libraries)
+
+## Structure
+
 ```
-
-Visit http://localhost:4321
-
-## Regenerate the UMAP data
-
-The homepage visualization reads `public/data/umap.json`, precomputed by
-`gen_umap_data.py`. To change the number of points, clusters, or palette,
-edit the constants at the top of that script and rerun:
-
-```bash
-python3 gen_umap_data.py
+src/
+  components/   reusable UI (Nav, Footer, BrainNetwork, etc.)
+  layouts/      shared page layout
+  pages/        site routes
+  styles/       global CSS + theme tokens
 ```
-
-Requires only Python's standard library (no numpy/sklearn dependency).
-
-## Add content
-
-- **Blog posts**: add a `.md` file to `src/content/blog/` (see `hello-world.md`
-  for the frontmatter shape).
-- **Posters/papers**: add a `.md` file to `src/content/posters/` (see
-  `sample-poster.md`). Put the actual PDF in `public/posters/`.
-- **Projects**: edit the `projects` array directly in `src/pages/projects.astro`.
-- **Skills**: edit the `domains` array in `src/pages/skills.astro`.
-
-## Deploy to Vercel
-
-1. Push this repo to GitHub.
-2. In Vercel: New Project → Import the repo. Vercel auto-detects Astro
-   (build command `astro build`, output `dist/`) — no config needed.
-3. Every push to `main` redeploys; every PR gets a preview URL.
-
-## Things to personalize before shipping
-
-- Replace `yourname.bio`, email, GitHub/LinkedIn/Scholar links in
-  `src/components/Nav.astro` and `Footer.astro`.
-- Replace placeholder copy on `about.astro`, `skills.astro`, `projects.astro`,
-  `extracurriculars.astro`.
-- Swap `site` URL in `astro.config.mjs` once you have your Vercel domain.

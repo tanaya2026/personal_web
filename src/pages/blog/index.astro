@@ -1,0 +1,29 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+<Layout title="Blog">
+  <section class="section container">
+    <p class="eyebrow">cat blog/*.md</p>
+    <h1>Blog</h1>
+    <div class="grid" style="margin-top:2rem">
+      {posts.map((p) => (
+        <a href={`/blog/${p.slug}`} class="card" style="border-bottom:none">
+          <span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--text-faint)">
+            {p.data.date.toDateString()}
+          </span>
+          <h3 style="margin:0.3rem 0 0">{p.data.title}</h3>
+          <p class="dim" style="margin:0.3rem 0 0">{p.data.summary}</p>
+          <div class="tag-row">
+            {p.data.tags.map((t: string) => <span class="tag">{t}</span>)}
+          </div>
+        </a>
+      ))}
+      {posts.length === 0 && <p class="dim">Add markdown files to src/content/blog/ to populate this list.</p>}
+    </div>
+  </section>
+</Layout>

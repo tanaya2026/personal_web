@@ -1,0 +1,470 @@
+---
+// BrainNetwork.astro
+// Drop this file into src/components/BrainNetwork.astro
+// Then use it anywhere with: <BrainNetwork />
+---
+
+<div class="brain-network">
+  <span class="sr-only">
+    Animated diagram: a terminal runs the command infer "Tanaya Datar".
+    It extracts a numeric feature vector, x, from the name, then feeds
+    x through a three-layer feedforward neural network drawn inside a
+    brain outline. Neurons and connections activate layer by layer in
+    a left-to-right wave, and the terminal decodes the network's
+    output into three predicted labels: ML, Bioinformatics, and
+    Genomics.
+  </span>
+
+  <div class="stage">
+    <div class="terminal">
+      <div class="term-header">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="term-title">infer.sh</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="prompt">$</span> <span id="cmdText"></span><span id="cmdCaret" class="caret">▌</span></div>
+        <div class="term-line out" id="line1"></div>
+        <div class="term-line out" id="line2"></div>
+        <div class="term-line out" id="line3"></div>
+        <div class="term-line out res" id="lineOut0"></div>
+        <div class="term-line out res" id="lineOut1"></div>
+        <div class="term-line out res" id="lineOut2"></div>
+      </div>
+    </div>
+
+    <svg viewBox="0 0 1100 460" class="brain-svg" role="img">
+      <title>Brain outline containing a feedforward neural network with three hidden layers</title>
+      <desc>A numeric feature vector, extracted from a name by the terminal, is carried into the first layer of a three-layer neural network drawn inside a brain silhouette. Neurons and connections light up layer by layer, then three arrows leave the last layer's neurons, decoded as predicted labels: ML, Bioinformatics, and Genomics.</desc>
+
+      <defs>
+        <marker id="arrow-in" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#1D9E75" />
+        </marker>
+        <marker id="arrow-ml" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#1D9E75" />
+        </marker>
+        <marker id="arrow-bio" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#7F77DD" />
+        </marker>
+        <marker id="arrow-gen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#D85A30" />
+        </marker>
+      </defs>
+
+      <!-- extracted numeric feature vector, fades in once the terminal reports it -->
+      <text id="featVec" class="vec-in"></text>
+
+      <g transform="translate(250,0)">
+        <path class="brain-outline" d="M140 300
+          C80 290 60 220 90 170
+          C70 130 100 80 150 70
+          C160 30 230 10 290 25
+          C330 5 400 5 440 30
+          C480 10 540 30 550 70
+          C590 80 610 130 590 170
+          C610 210 590 260 550 280
+          C560 310 540 340 500 350
+          C510 380 470 400 430 390
+          C420 410 380 415 350 400
+          C320 415 280 410 270 390
+          C230 400 190 380 180 350
+          C150 345 130 320 140 300 Z" />
+        <path class="brain-stem" d="M405 383 C400 408 400 432 412 448 L452 448 C464 432 464 408 455 383 Z" />
+
+        <!-- ridges / grooves (gyri texture) -->
+        <path class="groove" d="M165 95 C190 115 215 90 245 108 C265 120 250 140 230 132" />
+        <path class="groove" d="M270 55 C300 82 335 58 365 82 C385 98 368 118 345 110" />
+        <path class="groove" d="M400 45 C425 72 460 52 485 78 C500 95 482 112 462 104" />
+        <path class="groove" d="M120 190 C150 205 145 235 175 248 C195 257 205 235 190 222" />
+        <path class="groove" d="M470 165 C500 182 495 212 525 224" />
+        <path class="groove" d="M200 300 C230 312 260 300 290 312" />
+        <path class="groove" d="M350 305 C380 318 410 305 440 315" />
+
+        <rect class="layer-box l1-box" x="185" y="95" width="90" height="235" rx="14" />
+        <rect class="layer-box l2-box" x="305" y="95" width="90" height="235" rx="14" />
+        <rect class="layer-box l3-box" x="425" y="95" width="90" height="235" rx="14" />
+
+      <g id="inputArrows">
+  <line class="wline in-arrow"
+        x1="145" y1="205"
+        x2="217" y2="150"
+        marker-end="url(#arrow-in)" />
+
+  <line class="wline in-arrow"
+        x1="145" y1="205"
+        x2="217" y2="212"
+        marker-end="url(#arrow-in)" />
+
+  <line class="wline in-arrow"
+        x1="145" y1="205"
+        x2="217" y2="274"
+        marker-end="url(#arrow-in)" />
+</g>
+
+        <g id="lines"></g>
+        <g id="nodes"></g>
+
+        <!-- output arrows, one leaving each last-layer neuron -->
+        <g id="arrows">
+          <g class="out-arrow" data-label="Bioinformatics">
+            <line x1="486" y1="147" x2="640" y2="42" stroke="#1D9E75" stroke-width="2" marker-end="url(#arrow-ml)" />
+            <text class="out-label" x="638" y="38" fill="#1D9E75"></text>
+          </g>
+          <g class="out-arrow" data-label="Genomics">
+            <line x1="486" y1="212" x2="650" y2="212" stroke="#7F77DD" stroke-width="2" marker-end="url(#arrow-bio)" />
+            <text class="out-label" x="658" y="217" fill="#7F77DD"></text>
+          </g>
+          <g class="out-arrow" data-label="ML">
+            <line x1="486" y1="277" x2="630" y2="382" stroke="#D85A30" stroke-width="2" marker-end="url(#arrow-gen)" />
+            <text class="out-label" x="638" y="396" fill="#D85A30"></text>
+          </g>
+        </g>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<style>
+  .brain-network {
+    --l1: #1D9E75;
+    --l2: #7F77DD;
+    --l3: #D85A30;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  .stage {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  /* --- terminal --- */
+  .terminal {
+    flex: 0 0 300px;
+    background: #10161a;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  .term-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    background: #161d21;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .dot.r { background: #e5695c; }
+  .dot.y { background: #e5b95c; }
+  .dot.g { background: #5cbf6a; }
+  .term-title {
+    margin-left: 6px;
+    font-size: 11px;
+    color: #6b7880;
+  }
+  .term-body {
+    padding: 12px 14px;
+    min-height: 150px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .term-line {
+    color: #d7dde0;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .term-line.out {
+    opacity: 0;
+    transform: translateY(2px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    color: #8fd6c4;
+  }
+  .term-line.out.show { opacity: 1; transform: translateY(0); }
+  .term-line.res { color: #f2c96d; }
+  .prompt { color: #5cbf6a; }
+  /* Added */
+.term-prompt-color {
+  color: #5cbf6a; /* This is the color of your prompt */
+}
+  .caret { display: inline-block; opacity: 1; }
+  .caret.blink { animation: blink 0.9s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } 0%, 100% { opacity: 1; } }
+
+  /* --- diagram --- */
+  .brain-svg { flex: 1 1 500px; width: 100%; height: auto; overflow: visible; min-width: 320px; }
+
+  .brain-outline, .brain-stem {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    opacity: 0.35;
+  }
+
+  .groove {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1;
+    stroke-linecap: round;
+    opacity: 0.22;
+  }
+
+  .layer-box {
+    fill: none;
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+    opacity: 0.5;
+  }
+  .l1-box { stroke: var(--l1); }
+  .l2-box { stroke: var(--l2); }
+  .l3-box { stroke: var(--l3); }
+
+  .node-c {
+    opacity: 0.55;
+    stroke-width: 1.5;
+    transition: fill 0.35s ease, opacity 0.35s ease;
+  }
+  .node-c.lit { opacity: 1; }
+
+  .wline {
+    stroke-width: 1;
+    opacity: 0.1;
+    transition: opacity 0.4s ease, stroke-width 0.4s ease;
+  }
+  .wline.lit { opacity: 0.85; stroke-width: 1.75; }
+
+  .in-arrow { stroke: var(--l1); }
+
+  .vec-in {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 15px;
+    fill: var(--l1);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .vec-in.show { opacity: 1; }
+
+  .out-arrow {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .out-arrow.show { opacity: 1; }
+  .out-label {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 16px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .node-c, .wline, .vec-in, .out-arrow, .caret, .term-line.out { transition: none; animation: none; }
+  }
+</style>
+
+<script>
+  function initBrainNetwork() {
+    const root = document.querySelector('.brain-network');
+    if (!root) return;
+
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const lines = root.querySelector('#lines');
+    const nodes = root.querySelector('#nodes');
+    const featVec = root.querySelector('#featVec');
+    const inputArrows = root.querySelectorAll('.in-arrow');
+    const outArrows = root.querySelectorAll('.out-arrow');
+
+    const cmdText = root.querySelector('#cmdText');
+    const cmdCaret = root.querySelector('#cmdCaret');
+    const line1 = root.querySelector('#line1');
+    const line2 = root.querySelector('#line2');
+    const line3 = root.querySelector('#line3');
+    const outLines = [root.querySelector('#lineOut0'), root.querySelector('#lineOut1'), root.querySelector('#lineOut2')];
+
+    // a stand-in feature vector — what "infer" actually hands the network
+    // is a fixed-length numeric encoding, never the raw name string
+    const FEATURE_VECTOR = '[0.82, -0.35, 1.14, 0.07, -0.91, 1.2, 0.8]';
+
+    // fill in the short quoted tag next to each output arrow, e.g. 'ML'
+    outArrows.forEach((g) => {
+      g.querySelector('.out-label').textContent = `'${g.dataset.label}'`;
+    });
+
+    const cols = [230, 350, 470];
+    const rows = [150, 212, 274];
+    const colorByLayer = ['#1D9E75', '#7F77DD', '#D85A30'];
+
+    const pos = [];
+    for (let c = 0; c < 3; c++) for (let r = 0; r < 3; r++) pos.push({ c, r, x: cols[c], y: rows[r] });
+
+    const edgeEls = [];
+    for (let c = 0; c < 2; c++) {
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          const a = pos.find((p) => p.c === c && p.r === i);
+          const b = pos.find((p) => p.c === c + 1 && p.r === j);
+          const l = document.createElementNS(svgNS, 'line');
+          l.setAttribute('x1', a.x); l.setAttribute('y1', a.y);
+          l.setAttribute('x2', b.x); l.setAttribute('y2', b.y);
+          l.setAttribute('class', 'wline');
+          l.setAttribute('stroke', colorByLayer[c]);
+          l.setAttribute('data-layer', c);
+          lines.appendChild(l);
+          edgeEls.push(l);
+        }
+      }
+    }
+
+    const nodeEls = [];
+    pos.forEach((p) => {
+      const circ = document.createElementNS(svgNS, 'circle');
+      circ.setAttribute('cx', p.x); circ.setAttribute('cy', p.y); circ.setAttribute('r', 13);
+      circ.setAttribute('stroke', colorByLayer[p.c]);
+      circ.setAttribute('fill', 'none');
+      circ.setAttribute('data-color', colorByLayer[p.c]);
+      circ.setAttribute('class', 'node-c');
+      circ.setAttribute('data-layer', p.c);
+      nodes.appendChild(circ);
+      nodeEls.push(circ);
+    });
+
+    const nodesInLayer = (layer) => nodeEls.filter((n) => Number(n.dataset.layer) === layer);
+    const edgesInLayer = (layer) => edgeEls.filter((e) => Number(e.dataset.layer) === layer);
+
+    function lightNodes(nodeList) {
+      nodeList.forEach((n) => {
+        n.setAttribute('fill', n.dataset.color);
+        n.classList.add('lit');
+      });
+    }
+
+    function showLine(el, text) {
+      el.textContent = text;
+      el.classList.add('show');
+    }
+
+    function reset() {
+      nodeEls.forEach((n) => { n.setAttribute('fill', 'none'); n.classList.remove('lit'); });
+      edgeEls.forEach((e) => e.classList.remove('lit'));
+      inputArrows.forEach((a) => a.classList.remove('lit'));
+      outArrows.forEach((a) => a.classList.remove('show'));
+      featVec.classList.remove('show');
+      featVec.textContent = '';
+      cmdText.textContent = '';
+      cmdCaret.classList.remove('blink');
+      cmdCaret.style.opacity = 1;
+      [line1, line2, line3, ...outLines].forEach((el) => { el.classList.remove('show'); el.textContent = ''; });
+      root.querySelectorAll('.res-dynamic').forEach((el) => el.remove());
+    }
+
+    function typeCommand(text, speed, onDone) {
+      let i = 0;
+      cmdCaret.classList.add('blink');
+      const iv = setInterval(() => {
+        cmdText.textContent += text[i];
+        i++;
+        if (i >= text.length) {
+          clearInterval(iv);
+          setTimeout(() => {
+            cmdCaret.classList.remove('blink');
+            cmdCaret.style.opacity = 0;
+            onDone && onDone();
+          }, 300);
+        }
+      }, 55);
+    }
+
+  // Inside your <script> tag, replace the run() and fireWave() functions:
+
+function fireWave(onComplete) {
+  let t = 0;
+  const step = 400;
+  
+  // Wave animation
+  setTimeout(() => inputArrows.forEach((a) => a.classList.add('lit')), t); t += step;
+  setTimeout(() => lightNodes(nodesInLayer(0)), t); t += step;
+  setTimeout(() => edgeEls.filter(e => e.dataset.layer == 0).forEach(e => e.classList.add('lit')), t); t += step;
+  setTimeout(() => lightNodes(nodesInLayer(1)), t); t += step;
+  setTimeout(() => edgeEls.filter(e => e.dataset.layer == 1).forEach(e => e.classList.add('lit')), t); t += step;
+  setTimeout(() => lightNodes(nodesInLayer(2)), t); t += step;
+  
+  // Call the callback once the layers are lit
+  setTimeout(() => {
+    if (onComplete) onComplete();
+  }, t);
+}
+
+function run() {
+  reset();
+  const termBody = root.querySelector('.term-body'); // Reference the container
+
+  // Slower typing speed (80ms)
+  typeCommand('infer "Tanaya Datar"', 80, () => {
+    
+    // Step 1: Extracting
+    setTimeout(() => showLine(line1, '> extracting features...'), 600);
+    
+    // Step 2: Show Feature Vector
+    setTimeout(() => {
+      showLine(line2, `> x = ${FEATURE_VECTOR}`);
+      featVec.textContent = `x = ${FEATURE_VECTOR}`;
+      featVec.classList.add('show');
+    }, 1500);
+    
+    // Step 3: Run Forward Pass (Triggers animation)
+    setTimeout(() => {
+      showLine(line3, '> running forward pass...');
+      
+      fireWave(() => {
+        // Step 4: Decoding status (Using lineOut1, this will stay)
+        showLine(lineOut1, '> decoding predictions...');
+        
+        // Step 5: Show the y-hat labels below the decoding line
+        setTimeout(() => {
+          outArrows.forEach((a, i) => {
+            setTimeout(() => {
+              // Create a new div element for each result
+              // Adding 'res-dynamic' so it can be found and removed next cycle
+              const newResLine = document.createElement('div');
+              newResLine.className = 'term-line out res show res-dynamic';
+              // Astro's scoped <style> only applies to elements present in the
+              // compiled template — elements created here via createElement
+              // never get that scope attribute, so they'd otherwise fall back
+              // to the page's inherited text color (which flips with theme).
+              // Setting color inline guarantees it stays visible in both modes.
+              newResLine.style.color = '#f2c96d';
+              newResLine.textContent = `> ŷ[${i}] = '${a.dataset.label}'`;
+              
+              // Append to terminal body so it appears below the "decoding" line
+              termBody.appendChild(newResLine);
+              
+              // Show the corresponding arrow in the brain
+              a.classList.add('show');
+            }, i * 400); // Staggered appearance
+          });
+        }, 800);
+      });
+    }, 2500);
+  });
+}
+
+
+    // position the feature-vector label once we know the SVG's own scale
+    featVec.setAttribute('x', 15);
+    featVec.setAttribute('y', 216);
+
+    run();
+    setInterval(run, 12000);
+  }
+
+  document.addEventListener('astro:page-load', initBrainNetwork);
+  initBrainNetwork();
+</script>

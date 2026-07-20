@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const items = [
+  { year: '2025-2026', title: '1st Place, Life Sciences Case Competition — WISE 14th Annual National Conference', note: 'Competed against university teams nationwide to design an ML-based anomaly detection pipeline using FFT signal processing for disease-carrying mosquito identification, then presented findings and recommendations to a non-technical judging panel.' },
+  { year: '2025-2026', title: 'Accessibility Services, Volunteer Note Taker', note: 'Enhanced learning accessibility by producing comprehensive notes across STEM courses for students with accommodation needs.' },
+  { year: '2025-2026', title: 'CSBSU Mentorship Program, Mentor', note: 'Guided undergraduate students in academics, research, and career planning to support their professional growth.' },
+  { year: '2025-2026', title: 'BACSA, Outreach & Partnerships Coordinator', note: 'Built partnerships with researchers and industry professionals to expand student networking and experiential learning opportunities.' },
+  { year: '2025', title: 'University of Toronto Saturday Program, Tutor', note: 'Provided personalized math and chemistry tutoring while encouraging academic confidence and future educational goals.' },
+  { year: '2025', title: 'SciHigh Volunteer, Lunenfeld-Tanenbaum Research Institute', note: 'Inspired younger students to explore science through engaging outreach and STEM education activities.' }
+];
+---
+<Layout title="Extracurriculars">
+  <section class="section container">
+    <p class="eyebrow">cat extracurriculars.md</p>
+    <h1>Extracurriculars</h1>
+    <div class="grid" style="margin-top:2rem; gap:1rem">
+      {items.map((it) => (
+        <div class="card" style="display:flex; gap:1.5rem; align-items:baseline">
+        <span style="font-family:var(--font-mono); color:var(--accent); min-width:6rem; white-space:nowrap">
+        {it.year}
+        </span>
+          <div>
+            <h3 style="font-size:1.05rem; margin:0">{it.title}</h3>
+            <p class="dim" style="margin:0.25rem 0 0">{it.note}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,101 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const domains = [
+  {
+    id: 'bio',
+    label: 'Bioinformatics & Genomics',
+    color: '#f2a94e',
+    skills: [
+      'Single-cell RNA-seq analysis (Seurat, Scanpy)',
+      'Bulk RNA-seq & differential expression analysis',
+      'Sequence alignment & genomic pipelines',
+      'STAR, SAMtools, DESeq2, MultiQC',
+    ],
+  },
+  {
+    id: 'ml',
+    label: 'Machine Learning & AI',
+    color: '#3ba9a6',
+    skills: [
+      'Supervised & unsupervised learning',
+      'Dimensionality reduction (PCA, UMAP)',
+      'Feature engineering & clustering',
+      'Deep learning for biological data',
+    ],
+  },
+  {
+    id: 'cs',
+    label: 'Programming & Software',
+    color: '#7c8cd6',
+    skills: [
+      'Python & R',
+      'Bash / Shell scripting',
+      'Java, C, JavaScript, HTML/CSS',
+      'Git, Docker, Linux/Unix',
+      'Jupyter Notebook & VS Code',
+    ],
+  },
+  {
+    id: 'data',
+    label: 'Biomedical Data Science',
+    color: '#e2725b',
+    skills: [
+      'Clinical & genomic data curation',
+      'Genotype-phenotype analysis',
+      'Tumor profiling & biomarker discovery',
+      'Statistical modeling & data visualization',
+    ],
+  },
+];
+---
+
+<Layout title="Skills">
+  <section class="section container">
+    <p class="eyebrow">cat skills.md</p>
+    <h1>Skills</h1>
+
+    <p class="dim" style="max-width:var(--measure)">
+      Computational biology and bioinformatics at the intersection of genomics, machine learning,
+      and biomedical data science. These are the tools and methods I use to
+      analyze complex biological systems.
+    </p>
+
+    <div class="grid grid-2" style="margin-top:2rem">
+      {domains.map((d) => (
+        <div class="card domain-card" style={`--dc: ${d.color}`}>
+          <h3 style={`color:${d.color}`}>{d.label}</h3>
+          <ul class="skill-list">
+            {d.skills.map((s) => <li>{s}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .domain-card { 
+    border-left: 3px solid var(--dc); 
+  }
+
+  .skill-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.8rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .skill-list li {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  .skill-list li::before {
+    content: '→ ';
+    color: var(--dc);
+  }
+</style>

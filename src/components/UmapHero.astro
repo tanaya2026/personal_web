@@ -1,0 +1,437 @@
+---
+// Signature interactive feature: synthetic cerebellar-cell UMAP.
+// Data is precomputed for exactly 4 fixed resolutions (0.4, 0.5, 0.8, 1.2)
+// by gen_umap_data.py -> public/data/umap.json. The slider only stops at
+// these 4 positions (it's an index picker, not a continuous value). On each
+// change, points tween from their currently-rendered position/color to the
+// new step's precomputed position/color -- nothing is reclustered live.
+// Clusters are numbered on the plot (Seurat-style); the side legend maps
+// each number to its real cell-type name for that step.
+---
+<section class="umap-hero">
+  <div class="umap-intro">
+    <p class="eyebrow" style="margin:0 0 0.8rem">interactive</p>
+    <h2>Explore the cerebellum</h2>
+    <p class="dim">
+      Slide to view the same population of cells clustered at a coarser or
+      finer resolution — the way you'd adjust the Leiden resolution
+      parameter in Scanpy. Clusters split as resolution increases; siblings
+      stay near their shared parent.
+    </p>
+  </div>
+
+  <div class="umap-viz">
+    <div class="plot-frame">
+      <canvas id="umap-canvas" aria-label="Interactive UMAP visualization of synthetic cerebellar cell types"></canvas>
+      <span class="axis-label axis-y">UMAP_2</span>
+      <span class="axis-label axis-x">UMAP_1</span>
+    </div>
+
+    <div class="legend-panel" id="legend" aria-live="polite"></div>
+
+    <div class="slider-block">
+      <div class="slider-row">
+        <span class="slider-label">0.4</span>
+        <input type="range" id="resolution-slider" min="0" max="3" step="1" value="1" />
+        <span class="slider-label">1.2</span>
+      </div>
+      <div class="slider-caption">
+        <span class="eyebrow" style="margin:0">cluster resolution</span>
+        <span id="resolution-value" class="resolution-value">0.5</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .umap-hero {
+    display: grid;
+    grid-template-columns: minmax(220px, 300px) 1fr;
+    gap: 2.5rem;
+    align-items: center;
+    padding: 3rem 1.5rem;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+  .umap-intro h2 { margin-bottom: 0.7rem; }
+
+  .umap-viz {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+  .viz-row {
+    display: flex;
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+
+  .plot-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-height: 520px;
+    margin: 0 auto;
+    background: radial-gradient(ellipse at 50% 35%, var(--umap-bg-inner) 0%, var(--umap-bg-outer) 70%);
+    border: 1px solid var(--rule-strong);
+    border-radius: 10px;
+    padding: 0.5rem 0.5rem 2.1rem 2.1rem;
+    box-sizing: border-box;
+  }
+  #umap-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .axis-label {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    color: var(--text-faint);
+  }
+  .axis-label.axis-x {
+    bottom: 0.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .axis-label.axis-y {
+    left: 0.4rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: center;
+  }
+
+  .legend-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.9rem;
+    justify-content: center;
+    padding: 0 0.5rem;
+  }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-dim);
+  }
+  .legend-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #fff;
+    flex: none;
+  }
+
+  .slider-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--rule);
+  }
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    width: min(420px, 90%);
+  }
+  .slider-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+  #resolution-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2px;
+    background: var(--rule-strong);
+    border-radius: 999px;
+    outline: none;
+  }
+  #resolution-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+    cursor: pointer;
+    transition: box-shadow 0.15s ease;
+  }
+  #resolution-slider::-webkit-slider-thumb:hover { box-shadow: 0 0 0 6px var(--accent-soft); }
+  #resolution-slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border: none;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+    cursor: pointer;
+  }
+  .slider-caption {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-family: var(--font-mono);
+  }
+  .resolution-value {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    min-width: 2ch;
+  }
+
+  @media (max-width: 900px) {
+    .umap-hero {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+      padding: 2.5rem 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  type Point = [number, number, string, string]; // x, y, color, label
+  interface LegendEntry { label: string; color: string; index: number }
+  interface UmapData {
+    canvasSize: number;
+    resolutions: number[];
+    defaultIndex: number;
+    numPoints: number;
+    steps: Point[][];
+    legends: LegendEntry[][];
+  }
+
+  const canvas = document.getElementById('umap-canvas') as HTMLCanvasElement;
+  const slider = document.getElementById('resolution-slider') as HTMLInputElement;
+  const resValueEl = document.getElementById('resolution-value') as HTMLSpanElement;
+  const legendEl = document.getElementById('legend') as HTMLDivElement;
+
+  if (canvas && slider) {
+    const ctx = canvas.getContext('2d')!;
+    let data: UmapData | null = null;
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    let breathePhase: Float32Array;
+    let breatheAmp: Float32Array;
+
+    let curX: Float32Array, curY: Float32Array;
+    let curR: Float32Array, curG: Float32Array, curB: Float32Array;
+    let startX: Float32Array, startY: Float32Array;
+    let startR: Float32Array, startG: Float32Array, startB: Float32Array;
+    let targetX: Float32Array, targetY: Float32Array;
+    let targetR: Float32Array, targetG: Float32Array, targetB: Float32Array;
+
+    // groups[legendIdx] = array of point indices belonging to that cluster
+    // in the currently-targeted step -- used to compute a live centroid for
+    // the on-plot number each frame.
+    let groups: number[][] = [];
+
+    let transitionStart = 0;
+    const TRANSITION_MS = 900;
+    let transitioning = false;
+    let currentStepIndex = 1;
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+    }
+
+    function hexToRgb(hex: string) {
+      const n = parseInt(hex.slice(1), 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    }
+
+    function easeInOutCubic(t: number) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function renderLegend(stepIndex: number) {
+      const legend = data!.legends[stepIndex];
+      legendEl.innerHTML = legend
+        .map(
+          (l) =>
+            `<span class="legend-item"><span class="legend-num" style="background:${l.color}">${l.index}</span>${l.label}</span>`
+        )
+        .join('');
+    }
+
+    function buildGroups(stepIndex: number) {
+      const legend = data!.legends[stepIndex];
+      const labelToIdx = new Map(legend.map((l, i) => [l.label, i]));
+      const g: number[][] = legend.map(() => []);
+      const step = data!.steps[stepIndex];
+      for (let i = 0; i < step.length; i++) {
+        const gi = labelToIdx.get(step[i][3]);
+        if (gi !== undefined) g[gi].push(i);
+      }
+      return g;
+    }
+
+    function goToStep(stepIndex: number) {
+      if (!data) return;
+      const step = data.steps[stepIndex];
+      for (let i = 0; i < step.length; i++) {
+        startX[i] = curX[i];
+        startY[i] = curY[i];
+        startR[i] = curR[i];
+        startG[i] = curG[i];
+        startB[i] = curB[i];
+
+        const [x, y, color] = step[i];
+        const [r, g, b] = hexToRgb(color);
+        targetX[i] = x;
+        targetY[i] = y;
+        targetR[i] = r;
+        targetG[i] = g;
+        targetB[i] = b;
+      }
+      currentStepIndex = stepIndex;
+      groups = buildGroups(stepIndex);
+      transitionStart = performance.now();
+      transitioning = true;
+      renderLegend(stepIndex);
+      resValueEl.textContent = data.resolutions[stepIndex].toFixed(1);
+    }
+
+    function isLightTheme() {
+      return document.documentElement.getAttribute('data-theme') === 'light';
+    }
+
+    function draw(time: number) {
+      if (!data) {
+        requestAnimationFrame(draw);
+        return;
+      }
+
+      if (transitioning) {
+        const t = Math.min(1, (time - transitionStart) / TRANSITION_MS);
+        const e = easeInOutCubic(t);
+        for (let i = 0; i < data.numPoints; i++) {
+          curX[i] = startX[i] + (targetX[i] - startX[i]) * e;
+          curY[i] = startY[i] + (targetY[i] - startY[i]) * e;
+          curR[i] = startR[i] + (targetR[i] - startR[i]) * e;
+          curG[i] = startG[i] + (targetG[i] - startG[i]) * e;
+          curB[i] = startB[i] + (targetB[i] - startB[i]) * e;
+        }
+        if (t >= 1) transitioning = false;
+      }
+
+      const rect = canvas.getBoundingClientRect();
+      const scale = (Math.min(rect.width, rect.height) / data.canvasSize) * 1.5 * dpr;
+      const offsetX = (rect.width * dpr - data.canvasSize * scale) / 2;
+      const offsetY = (rect.height * dpr - data.canvasSize * scale) / 2;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const breatheT = time * 0.0009;
+      const radius = 4.1 * dpr;
+
+      for (let i = 0; i < data.numPoints; i++) {
+        const breathe = Math.sin(breatheT + breathePhase[i]) * breatheAmp[i];
+        const px = offsetX + (curX[i] + breathe) * scale;
+        const py = offsetY + (curY[i] + breathe * 0.6) * scale;
+
+        ctx.beginPath();
+        ctx.fillStyle = `rgb(${curR[i] | 0},${curG[i] | 0},${curB[i] | 0})`;
+        ctx.globalAlpha = 0.88;
+        ctx.arc(px, py, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+      // Cluster number labels at live centroids
+      const light = isLightTheme();
+      const haloFill = light ? 'rgba(255,255,255,0.85)' : 'rgba(15,20,22,0.72)';
+      const textFill = light ? '#1c211f' : '#e9e6df';
+      ctx.font = `700 ${11 * dpr}px 'IBM Plex Mono', monospace`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      for (let gi = 0; gi < groups.length; gi++) {
+        const idxs = groups[gi];
+        if (!idxs.length) continue;
+        let sx = 0, sy = 0;
+        for (const idx of idxs) { sx += curX[idx]; sy += curY[idx]; }
+        const cx = offsetX + (sx / idxs.length) * scale;
+        const cy = offsetY + (sy / idxs.length) * scale;
+
+        ctx.beginPath();
+        ctx.fillStyle = haloFill;
+        ctx.arc(cx, cy, 11 * dpr, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = textFill;
+        ctx.fillText(String(gi + 1), cx, cy + 0.5 * dpr);
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    fetch('/data/umap.json')
+      .then((r) => r.json())
+      .then((json: UmapData) => {
+        data = json;
+        const n = json.numPoints;
+        breathePhase = new Float32Array(n);
+        breatheAmp = new Float32Array(n);
+        curX = new Float32Array(n);
+        curY = new Float32Array(n);
+        curR = new Float32Array(n);
+        curG = new Float32Array(n);
+        curB = new Float32Array(n);
+        startX = new Float32Array(n);
+        startY = new Float32Array(n);
+        startR = new Float32Array(n);
+        startG = new Float32Array(n);
+        startB = new Float32Array(n);
+        targetX = new Float32Array(n);
+        targetY = new Float32Array(n);
+        targetR = new Float32Array(n);
+        targetG = new Float32Array(n);
+        targetB = new Float32Array(n);
+
+        for (let i = 0; i < n; i++) {
+          breathePhase[i] = Math.random() * Math.PI * 2;
+          breatheAmp[i] = 1.5 + Math.random() * 2.5;
+        }
+
+        const defaultIndex = json.defaultIndex;
+        const step = json.steps[defaultIndex];
+        for (let i = 0; i < n; i++) {
+          const [x, y, color] = step[i];
+          const [r, g, b] = hexToRgb(color);
+          curX[i] = startX[i] = targetX[i] = x;
+          curY[i] = startY[i] = targetY[i] = y;
+          curR[i] = startR[i] = targetR[i] = r;
+          curG[i] = startG[i] = targetG[i] = g;
+          curB[i] = startB[i] = targetB[i] = b;
+        }
+        currentStepIndex = defaultIndex;
+        groups = buildGroups(defaultIndex);
+        slider.value = String(defaultIndex);
+        renderLegend(defaultIndex);
+        resValueEl.textContent = json.resolutions[defaultIndex].toFixed(1);
+
+        resize();
+        requestAnimationFrame(draw);
+      });
+
+    slider.addEventListener('input', () => {
+      const idx = parseInt(slider.value, 10);
+      if (idx !== currentStepIndex) goToStep(idx);
+    });
+
+    window.addEventListener('resize', resize);
+  }
+</script>
