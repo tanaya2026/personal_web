@@ -1,7 +1,7 @@
 ---
 title: "Bioinformatics tools for integrating and visualizing plant regulatory interaction networks"
 venue: "Genetics Database Issue"
-date: 2028-01-01
+date: 2027-01-01
 authors: "Nicholas Provart Lab (including Tanaya Datar)"
 tags: ["bioinformatics", "plant genomics", "software"]
 pdf: "/posters/sample-poster.pdf"
