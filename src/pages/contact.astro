@@ -5,9 +5,34 @@ import Layout from '../layouts/Layout.astro';
   <section class="section container">
     <p class="eyebrow">./contact --send</p>
     <h1>Contact</h1>
+
+        <div class="social-links">
+      <a href="https://www.linkedin.com/in/tanaya-datar-7484b62b5/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+          <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.03-1.85-3.03-1.86 0-2.14 1.45-2.14 2.94v5.66H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/>
+        </svg>
+        <span>LinkedIn</span>
+      </a>
+      <a href="https://github.com/tanaya2026" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.58 2 12.17c0 4.49 2.87 8.3 6.84 9.64.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.17-1.11-1.48-1.11-1.48-.91-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.54 2.34 1.1 2.91.84.09-.66.35-1.1.63-1.36-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.17C22 6.58 17.52 2 12 2z"/>
+        </svg>
+        <span>GitHub</span>
+      </a>
+      <a href="mailto:tanayadatar21@gmail.com" class="social-icon" aria-label="Email">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="m2 7 10 6 10-6"/>
+        </svg>
+        <span>Email</span>
+      </a>
+    </div>
+
     <p class="dim" style="max-width:var(--measure)">
       Get in touch. Whether it's research, genomics, software, or just to say hello, my inbox is always open.
       Execute <code>./send</code> below and your message will be delivered directly to my inbox.
+    </p>
+
 
     <div class="terminal-box">
       <div class="terminal-header">
@@ -75,6 +100,33 @@ import Layout from '../layouts/Layout.astro';
   .terminal-body input:focus, .terminal-body textarea:focus {
     outline: 2px solid var(--accent);
     outline-offset: 1px;
+  }
+  .social-links {
+    display: flex;
+    gap: 0.8rem;
+    margin: 1.5rem 0 2rem;
+    flex-wrap: wrap;
+  }
+  .social-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1rem;
+    border: 1px solid var(--rule-strong);
+    border-radius: 999px;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    background: var(--bg-raised);
+    transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  }
+  .social-icon svg {
+    flex-shrink: 0;
+  }
+  .social-icon:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
   }
 </style>
 

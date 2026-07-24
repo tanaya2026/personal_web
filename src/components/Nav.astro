@@ -8,6 +8,7 @@ const links = [
   { href: '/posters', label: 'research' },
   { href: 'https://genome-insider.vercel.app/', label: 'blog' },
   { href: '/extracurriculars', label: 'extracurriculars' },
+  { href: '/pdfs/Tanaya_Datar_Resume.pdf', label: 'resume' },
   { href: '/contact', label: 'contact' },
 ];
 ---
@@ -22,7 +23,10 @@ const links = [
     </div>
     <ul class="nav-links" id="nav-links">
       {links.map(l => (
-        <li><a href={l.href} class={path === l.href ? 'active' : ''}>{l.label}</a></li>
+        <li><a href={l.href} class={path === l.href ? 'active' : ''} 
+        target={l.href.endsWith('.pdf') ? '_blank' : undefined}
+        rel={l.href.endsWith('.pdf') ? 'noopener noreferrer' : undefined}
+        >{l.label}</a></li>
       ))}
     </ul>
   </div>
@@ -49,4 +53,5 @@ const links = [
     localStorage.setItem('theme', next);
     syncLabel();
   });
+
 </script>
