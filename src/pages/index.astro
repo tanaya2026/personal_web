@@ -2,44 +2,73 @@
 import Layout from '../layouts/Layout.astro';
 import BrainNetwork from '../components/BrainNetwork.astro';
 ---
+
 <Layout title="Home">
   <BrainNetwork />
 
   <section class="section container">
     <div class="prose">
       <p class="eyebrow">whoami</p>
-      <h1>Tanaya Datar </h1>
-      <p style="font-size:1.15rem; color:var(--text-dim)">
+
+      <h1>Tanaya Datar</h1>
+
+      <a
+        href="https://www.linkedin.com/posts/tanaya-datar-7484b62b5_last-weekend-i-had-the-privilege-of-attending-ugcPost-7425226914807590912-NuJR/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEu256gBJHgLZeDyDS5ah7IOH5YxO3uFAtc"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="tag"
+        style="text-decoration:none; border-bottom:none;"
+      >
+        🏆 1st Place — WISE Life Sciences Case Competition, 14th Annual National Conference
+      </a>
+
+      <p style="font-size:1.15rem; color:var(--text-dim); margin-top:1rem">
         I work at the intersection of bioinformatics, machine learning, and
         cancer genomics — building computational tools to make sense of
         high-dimensional biological data, from single-cell transcriptomes to
         gene regulatory networks, in pursuit of a clearer picture of how
         disease develops.
       </p>
-    <p>
-    I bridge the gap between data and discovery. The animation above visualizes this process: my name is converted into an input vector and processed through a neural network, surfacing the core pillars of my expertise: bioinformatics, ML and genomics.
+
+      <p>
+        I bridge the gap between data and discovery. The animation above
+        visualizes this process: my name is converted into an input vector and
+        processed through a neural network, surfacing the core pillars of my
+        expertise: bioinformatics, machine learning, and genomics.
       </p>
 
-
-      <a href="/projects" class="btn">See my projects &rarr;</a>
+      <a href="/projects" class="btn">
+        See my projects &rarr;
+      </a>
     </div>
   </section>
 
   <section class="section container">
     <p class="eyebrow">currently</p>
+
     <div class="grid grid-3">
       <div class="card">
         <h3 style="font-size:1.05rem">Research</h3>
-        <p class="dim" style="margin:0"> Cancer research using bioinformatics and computational biology approaches to study brain tumours.
-</p>
+        <p class="dim" style="margin:0">
+          Cancer research using bioinformatics and computational biology
+          approaches to study brain tumours.
+        </p>
       </div>
+
       <div class="card">
         <h3 style="font-size:1.05rem">Building</h3>
-        <p class="dim" style="margin:0"> AI-driven cellular morphological profiling approaches to extract biological insights from imaging data.</p>
+        <p class="dim" style="margin:0">
+          AI-driven cellular morphological profiling approaches to extract
+          biological insights from imaging data.
+        </p>
       </div>
+
       <div class="card">
         <h3 style="font-size:1.05rem">Reading</h3>
-        <p class="dim" style="margin:0"> Sequence-to-function models and deep learning frameworks for advancing computational biology.</p>
+        <p class="dim" style="margin:0">
+          Sequence-to-function models and deep learning frameworks for
+          advancing computational biology.
+        </p>
       </div>
     </div>
   </section>
