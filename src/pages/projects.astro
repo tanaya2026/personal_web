@@ -3,6 +3,12 @@ import Layout from '../layouts/Layout.astro';
 
 const projects = [
   {
+  title: 'SeedBench-Bio',
+  summary: 'Most demos of "AI-assisted code review" are unfalsifiable, and none are tested against the specific methodological standards bioinformatics pipelines actually need — correct QC assumptions, valid statistical tests, no data leakage. The model returns a paragraph of feedback with no way to check if it was actually good, or if a different prompt would have caught more. SeedBench-Bio is a benchmark I built to test that: seeded ground-truth errors into real bioinformatics pipelines, tested against 5 different prompting strategies.',
+  tags: ['bioinformatics', 'python', 'llm'],
+  links: [{ label: 'View', url: 'https://github.com/tanaya2026/SeedBench-Bio' }],
+},
+  {
     title: 'ExprCompareR',
     summary: 'Comparing RNA-seq and protein expression across tissues normally means manually pulling data from GTEx and the Human Protein Atlas, then hand-rolling normalization and stats. ExprCompareR is an R package that automates the pipeline end-to-end — querying both databases, computing Spearman correlations, flagging RNA/protein outlier genes, and comparing cancer vs. normal tissue expression — all through a Shiny app.',
     tags: ['bioinformatics', 'R', 'tools'],
