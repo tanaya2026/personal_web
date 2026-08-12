@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#000000"/>
+  <circle cx="32" cy="32" r="26" fill="none" stroke="#2A2A2A" stroke-width="1"/>
+  <!-- T, teal -->
+  <rect x="14" y="22" width="14" height="4.5" fill="#1D9E75"/>
+  <rect x="19" y="22" width="4.5" height="20" fill="#1D9E75"/>
+  <!-- D, purple -->
+  <rect x="32" y="22" width="4.5" height="20" fill="#7F77DD"/>
+  <path d="M32,22 L39,22 C44,22 47,26 47,32 C47,38 44,42 39,42 L32,42 L32,37.5 L38,37.5 C41,37.5 42.5,35.5 42.5,32 C42.5,28.5 41,26.5 38,26.5 L32,26.5 Z" fill="#7F77DD"/>
+  <!-- three orbiting nodes for the three pillars -->
+  <circle cx="32" cy="6" r="3.5" fill="#1D9E75"/>
+  <circle cx="53.5" cy="45" r="3.5" fill="#7F77DD"/>
+  <circle cx="10.5" cy="45" r="3.5" fill="#D85A30"/>
+</svg>
