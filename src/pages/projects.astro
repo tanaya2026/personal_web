@@ -5,8 +5,14 @@ const projects = [
   {
   title: 'SeedBench-Bio',
   summary: 'Most demos of "AI-assisted code review" are unfalsifiable, and none are tested against the specific methodological standards bioinformatics pipelines actually need — correct QC assumptions, valid statistical tests, no data leakage. The model returns a paragraph of feedback with no way to check if it was actually good, or if a different prompt would have caught more. SeedBench-Bio is a benchmark I built to test that: seeded ground-truth errors into real bioinformatics pipelines, tested against 5 different prompting strategies.',
-  tags: ['bioinformatics', 'python', 'llm'],
+  tags: ['bioinformatics', 'python', 'llm', 'ml'],
   links: [{ label: 'View', url: 'https://github.com/tanaya2026/SeedBench-Bio' }],
+},
+  {
+  title: 'EEG Seizure Detection',
+  summary: 'Majority walkthroughs of “AI for EEG seizure detection” stop at reproducing a fixed pipeline and reporting one accuracy score. But with 98.4% of windows being non-seizure, that score is misleading, as a model that never detects a seizure still achieves 98% accuracy. Randomly splitting windows from the same patient across train and test can also let the model memorize patient-specific EEG signatures rather than learn general seizure patterns. This project is a small study I ran on the CHB-MIT pediatric EEG dataset to test that directly: I compared three models (logistic regression, random forest, XGBoost) on engineered time-domain, frequency-domain, entropy, and Hjorth-parameter features, then measured how much performance actually dropped under leave-one-patient-out cross-validation versus a naive random split.',
+  tags: ['ml','bioinformatics', 'python'],
+  links: [{ label: 'View', url: 'https://github.com/tanaya2026/eeg-seizure-detection'}],
 },
   {
     title: 'ExprCompareR',
