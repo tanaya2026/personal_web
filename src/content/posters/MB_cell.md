@@ -1,6 +1,7 @@
 ---
 title: "Transcriptomic analysis of energy metabolism across medulloblastoma subtypes and cerebellar cell populations"
 venue: "Developmental Cell"
+status: "Under revision"
 date: 2026-01-01
 authors: "Ramaswamy Lab (including Tanaya Datar)"
 tags: ["bioinformatics", "cancer genomics", "single-cell RNA-seq"]
