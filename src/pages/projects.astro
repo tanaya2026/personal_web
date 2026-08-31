@@ -22,12 +22,6 @@ const projects = [
     { label: 'View', url: 'https://github.com/tanaya2026/medicare-genomic-testing-analysis' },
   ],
 },
-  {
-    title: 'ExprCompareR',
-    summary: 'Comparing RNA-seq and protein expression across tissues normally means manually pulling data from GTEx and the Human Protein Atlas, then hand-rolling normalization and stats. ExprCompareR is an R package that automates the pipeline end-to-end — querying both databases, computing Spearman correlations, flagging RNA/protein outlier genes, and comparing cancer vs. normal tissue expression — all through a Shiny app.',
-    tags: ['bioinformatics', 'R', 'tools'],
-    links: [{ label: 'View', url: 'https://github.com/tanaya2026/ExprCompareR' }],
-  },
 {
   title: 'BMP7 Signaling in Medulloblastoma: Bulk RNA-seq Analysis',
   summary: 'Recreated and extended the analysis behind Ohata et al. (2025) on BMP7-driven oncogenic signaling in medulloblastoma — cleaning, normalizing, and running differential expression on their bulk RNA-seq dataset (GSE229150), then following up with thresholded and non-thresholded pathway enrichment and building an enrichment map in Cytoscape.',
@@ -38,7 +32,12 @@ const projects = [
     { label: 'Pathway & Network Analysis', url: 'https://bcb420-2026.github.io/Tanaya_Datar/A2_TanayaDatar.html' },
     ],
   },
-
+   {
+    title: 'ExprCompareR',
+    summary: 'Comparing RNA-seq and protein expression across tissues normally means manually pulling data from GTEx and the Human Protein Atlas, then hand-rolling normalization and stats. ExprCompareR is an R package that automates the pipeline end-to-end — querying both databases, computing Spearman correlations, flagging RNA/protein outlier genes, and comparing cancer vs. normal tissue expression — all through a Shiny app.',
+    tags: ['bioinformatics', 'R', 'tools'],
+    links: [{ label: 'View', url: 'https://github.com/tanaya2026/ExprCompareR' }],
+  },
   {
   title: 'Arabidopsis Gene Regulatory Networks',
   summary: 'Newly discovered transcription-factor dimer interactions from dDAP-seq were sitting outside existing plant biology databases, so I parsed narrowPeak files against the TAIR10 genome annotation to extract the AGIs of interacting genes, then built a UI extension to visualize these new protein-DNA and protein-protein interactions in AIV2/ePlant.',
