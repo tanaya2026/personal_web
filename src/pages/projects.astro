@@ -14,6 +14,14 @@ const projects = [
   tags: ['ml','bioinformatics', 'python'],
   links: [{ label: 'View', url: 'https://github.com/tanaya2026/eeg-seizure-detection'}],
 },
+{
+  title: 'Medicare Genomic Testing Analytics',
+  summary: 'How does genomic testing utilization among Medicare beneficiaries vary across U.S. states, and does utilization appear aligned with disease burden? I built a SQL Server data model on seven years of CMS claims, starting with a CPT/HCPCS crosswalk covering 291 codes across six categories, then a Power BI dashboard with KPI, trend, geographic, outlier, and access-gap views. States like Kentucky, Nebraska, and Ohio combine above-median cancer incidence with some of the lowest genomic testing rates in the country.',
+  tags: ['sql', 'python', 'power-bi', 'excel', 'healthcare', 'data-analytics'],
+  links: [
+    { label: 'View', url: 'https://github.com/tanaya2026/medicare-genomic-testing-analysis' },
+  ],
+},
   {
     title: 'ExprCompareR',
     summary: 'Comparing RNA-seq and protein expression across tissues normally means manually pulling data from GTEx and the Human Protein Atlas, then hand-rolling normalization and stats. ExprCompareR is an R package that automates the pipeline end-to-end — querying both databases, computing Spearman correlations, flagging RNA/protein outlier genes, and comparing cancer vs. normal tissue expression — all through a Shiny app.',
